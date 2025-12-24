@@ -8,6 +8,7 @@
     :root{
       --grass:#1f8f3a;
       --track:#2aa14a;
+      --line:#ffffff;
       --shadow:rgba(0,0,0,.25);
       --text:#eafff0;
     }
@@ -26,41 +27,29 @@
       justify-content:center;
       padding:16px;
     }
-    /* Portrait = piste verticale visuellement */
     .card{
-      width:min(520px, 100%);
-      aspect-ratio: 9/16;
+      width:min(980px, 100%);
+      aspect-ratio: 16/9;
       border-radius:22px;
       position:relative;
       overflow:hidden;
       box-shadow: 0 18px 60px var(--shadow);
       border: 1px solid rgba(255,255,255,.12);
-      background: linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.30));
+      background: linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,.30));
     }
 
-    /* Wrapper qui évite le cropping quand on rotate */
-    .trackWrap{
-      position:absolute;
-      inset: 6% 8% 10% 8%;
-      border-radius: 22px;
-      overflow:hidden;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.10);
-    }
-
-    /* Track (rotated 90° pour devenir verticale) */
+    /* Track */
     .track{
       position:absolute;
-      inset:-22% -22%;
+      inset: 10% 7% 12% 7%;
       border-radius: 26px;
       background:
+        /* subtle texture */
         repeating-linear-gradient(135deg, rgba(255,255,255,.05) 0 6px, rgba(0,0,0,.05) 6px 12px),
         linear-gradient(180deg, rgba(255,255,255,.08), rgba(0,0,0,.10)),
         var(--track);
       box-shadow: inset 0 0 0 2px rgba(255,255,255,.10), inset 0 -40px 80px rgba(0,0,0,.22);
-      transform: rotate(90deg);
-      transform-origin:center;
     }
-
     .lane{
       position:absolute;
       left:6%;
@@ -91,6 +80,7 @@
       opacity:.9;
       pointer-events:none;
     }
+    /* dashed center line */
     .lane::after{
       inset: 38% 7% 38% 7%;
       background: repeating-linear-gradient(90deg, rgba(255,255,255,.9) 0 12px, transparent 12px 22px);
@@ -123,23 +113,19 @@
       font-weight:700;
     }
 
-    /* Runner */
+    /* Fighter (pixel-ish) */
     .runner{
       position:absolute;
-      left: 14%;
-      top: 60%;
+      left: 11%;
+      top: 58%;
       width: 56px;
       height: 56px;
-      transform: translate(-50%, -50%) rotate(-90deg); /* contre-rotation -> perso “droit” */
-      will-change: left;
-      animation: runLeft 4.2s linear infinite alternate;
+      transform: translate(-50%, -50%);
+      will-change: transform;
+      animation: runX 4.2s linear infinite alternate;
       filter: drop-shadow(0 10px 10px rgba(0,0,0,.35));
     }
-    @keyframes runLeft{
-      0%{ left:14%; }
-      100%{ left:86%; }
-    }
-
+    /* bounce between lanes slightly */
     .runner .body{
       width:100%;
       height:100%;
@@ -147,7 +133,7 @@
       animation: bob 360ms ease-in-out infinite;
     }
 
-    /* “arcade fighter vibe” sprite */
+    /* simple “street-fighter vibe” sprite using CSS blocks */
     .px{ position:absolute; background:#111; }
     .skin{ background:#f2c7a1; }
     .red{ background:#cf2e2e; }
@@ -155,16 +141,19 @@
     .white{ background:#f7f7f7; }
     .gold{ background:#f0c04a; }
 
+    /* Head */
     .h1{ left:18px; top:6px; width:20px; height:18px; background:#111; border-radius:6px; }
     .h2{ left:21px; top:9px; width:14px; height:12px; border-radius:4px; }
     .band{ left:18px; top:10px; width:20px; height:4px; }
     .eye{ left:28px; top:14px; width:4px; height:3px; background:#fff; }
     .eye::after{ content:""; position:absolute; left:2px; top:1px; width:2px; height:2px; background:#111; }
 
+    /* Torso */
     .t1{ left:18px; top:24px; width:22px; height:16px; border-radius:6px; }
     .belt{ left:18px; top:34px; width:22px; height:4px; }
     .badge{ left:34px; top:26px; width:6px; height:6px; border-radius:2px; }
 
+    /* Arms / legs */
     .a1{ left:10px; top:26px; width:10px; height:8px; border-radius:4px; transform-origin:right center; animation:punch 360ms ease-in-out infinite; }
     .a2{ left:38px; top:28px; width:10px; height:8px; border-radius:4px; transform-origin:left center; animation:punch2 360ms ease-in-out infinite; }
     .l1{ left:20px; top:40px; width:10px; height:12px; border-radius:4px; transform-origin:top center; animation:step 360ms ease-in-out infinite; }
@@ -172,13 +161,53 @@
     .shoe{ left:18px; top:50px; width:12px; height:5px; border-radius:3px; }
     .shoe2{ left:30px; top:50px; width:12px; height:5px; border-radius:3px; }
 
+    @keyframes runX{
+      0%{ transform: translate(-50%, -50%) translateX(0) }
+      100%{ transform: translate(-50%, -50%) translateX(calc(100vw * 0.42)) }
+    }
+    /* keep runner within card instead of viewport */
+    @media (min-width: 1px){
+      .runner{ animation-name: runXCard; }
+      @keyframes runXCard{
+        0%{ transform: translate(-50%, -50%) translateX(0) }
+        100%{ transform: translate(-50%, -50%) translateX(620px) }
+      }
+    }
     @keyframes bob{ 0%,100%{ transform:translateY(0) } 50%{ transform:translateY(-2px) } }
     @keyframes punch{ 0%,100%{ transform:rotate(10deg) } 50%{ transform:rotate(-18deg) } }
     @keyframes punch2{ 0%,100%{ transform:rotate(-8deg) } 50%{ transform:rotate(16deg) } }
     @keyframes step{ 0%,100%{ transform:rotate(12deg) } 50%{ transform:rotate(-18deg) } }
     @keyframes step2{ 0%,100%{ transform:rotate(-14deg) } 50%{ transform:rotate(20deg) } }
 
-    /* Watermark (à garder) */
+    /* HUD */
+    .hud{
+      position:absolute;
+      left:18px;
+      top:14px;
+      right:18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      pointer-events:none;
+    }
+    .tag{
+      background: rgba(0,0,0,.32);
+      border: 1px solid rgba(255,255,255,.14);
+      padding:10px 12px;
+      border-radius:14px;
+      backdrop-filter: blur(6px);
+      font-weight:700;
+      font-size:14px;
+      letter-spacing:.2px;
+      box-shadow: 0 10px 20px rgba(0,0,0,.22);
+    }
+    .tag small{
+      display:block;
+      margin-top:4px;
+      font-weight:600;
+      opacity:.85;
+    }
     .watermark{
       position:absolute;
       right:14px;
@@ -196,34 +225,39 @@
 <body>
   <div class="wrap">
     <div class="card">
-      <div class="trackWrap" aria-hidden="true">
-        <div class="track">
-          <div class="lane"></div>
-          <div class="lane"></div>
-          <div class="lane"></div>
-          <div class="lane"></div>
+      <div class="hud">
+        <div class="tag" id="title">Parcourir la distance
+          <small id="meta">Distance : —</small>
+        </div>
+        <div class="tag" id="pace">Allers-retours</div>
+      </div>
 
-          <div class="markers" id="markers"></div>
+      <div class="track" aria-hidden="true">
+        <div class="lane"></div>
+        <div class="lane"></div>
+        <div class="lane"></div>
+        <div class="lane"></div>
 
-          <div class="runner" id="runner">
-            <div class="body">
-              <div class="px h1"></div>
-              <div class="px h2 skin"></div>
-              <div class="px band red"></div>
-              <div class="px eye"></div>
+        <div class="markers" id="markers"></div>
 
-              <div class="px t1 blue"></div>
-              <div class="px belt red"></div>
-              <div class="px badge gold"></div>
+        <div class="runner" id="runner">
+          <div class="body">
+            <div class="px h1"></div>
+            <div class="px h2 skin"></div>
+            <div class="px band red"></div>
+            <div class="px eye"></div>
 
-              <div class="px a1 red"></div>
-              <div class="px a2 red"></div>
+            <div class="px t1 blue"></div>
+            <div class="px belt red"></div>
+            <div class="px badge gold"></div>
 
-              <div class="px l1 blue"></div>
-              <div class="px l2 blue"></div>
-              <div class="px shoe white"></div>
-              <div class="px shoe2 white"></div>
-            </div>
+            <div class="px a1 red"></div>
+            <div class="px a2 red"></div>
+
+            <div class="px l1 blue"></div>
+            <div class="px l2 blue"></div>
+            <div class="px shoe white"></div>
+            <div class="px shoe2 white"></div>
           </div>
         </div>
       </div>
@@ -233,12 +267,16 @@
   </div>
 
   <script>
-    // Garde le paramètre ?name=Coach%20Simon si tu veux le changer depuis Glide plus tard
+    // Simple query params: ?m=200&name=Coach%20Simon
     const qs = new URLSearchParams(location.search);
+    const meters = qs.get("m");
     const name = qs.get("name");
     if (name) document.querySelector(".watermark").textContent = name;
 
-    // Markers (10,20,30...) — tu peux ajuster plus tard
+    const meta = document.getElementById("meta");
+    meta.textContent = meters ? `Distance : ${meters} m` : "Distance : —";
+
+    // Add a few distance markers
     const markers = document.getElementById("markers");
     const n = 6;
     for (let i=1;i<=n;i++){
