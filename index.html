@@ -223,14 +223,6 @@
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-      <div class="hud">
-        <div class="tag" id="title">Parcourir la distance
-          <small id="meta">Distance : —</small>
-        </div>
-        <div class="tag" id="pace">Allers-retours</div>
-      </div>
 
       <div class="track" aria-hidden="true">
         <div class="lane"></div>
@@ -272,9 +264,6 @@
     const meters = qs.get("m");
     const name = qs.get("name");
     if (name) document.querySelector(".watermark").textContent = name;
-
-    const meta = document.getElementById("meta");
-    meta.textContent = meters ? `Distance : ${meters} m` : "Distance : —";
 
     // Add a few distance markers
     const markers = document.getElementById("markers");
