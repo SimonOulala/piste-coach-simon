@@ -179,7 +179,7 @@
     @keyframes step{ 0%,100%{ transform:rotate(12deg) } 50%{ transform:rotate(-18deg) } }
     @keyframes step2{ 0%,100%{ transform:rotate(-14deg) } 50%{ transform:rotate(20deg) } }
 
-    /* HUD */
+    /* HUD (styles laissés en place même si on a retiré le bloc HTML) */
     .hud{
       position:absolute;
       left:18px;
@@ -223,6 +223,8 @@
   </style>
 </head>
 <body>
+  <div class="wrap">
+    <div class="card">
 
       <div class="track" aria-hidden="true">
         <div class="lane"></div>
